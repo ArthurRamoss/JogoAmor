@@ -1,46 +1,62 @@
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
   <meta charset="UTF-8">
-  <title>Bookdle Classic</title>
+  <title>LivroMo</title>
   <style>
     body {
+      background: #f0e6d6;
+      color: #3a2f28;
       font-family: sans-serif;
-      background: #f4f4f4;
       margin: 0;
       padding: 20px;
     }
+
     h1 {
       text-align: center;
+      color: #1d2324; /* Verde-azulado escuro */
+  font-family: 'Georgia', serif;
     }
+
     #game {
       max-width: 800px;
       margin: 0 auto;
+      background: #fff9f0;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
     }
+
     form {
       display: flex;
       justify-content: center;
       margin-bottom: 10px;
     }
+
     input[type="text"] {
       width: 300px;
       padding: 10px;
       font-size: 16px;
     }
+
     button {
       padding: 10px;
       font-size: 16px;
       margin-left: 10px;
     }
+
     /* Definindo altura padrão para cada linha de palpite e cabeçalho */
-    .guess, .header {
+    .guess,
+    .header {
       display: grid;
-      grid-template-columns: 60px repeat(7, 1fr);
+      grid-template-columns: 60px repeat(8, 1fr);
       gap: 5px;
-      margin-bottom: 5px;
+      margin-bottom: 10px;
       align-items: center;
       height: 60px;
     }
+
     /* Cabeçalho com os rótulos das colunas */
     .header {
       font-weight: bold;
@@ -48,8 +64,9 @@
       background: #ddd;
       padding: 0;
     }
+
     .cell {
-      background: #999;
+      background: #d3c0b1;
       color: #fff;
       border-radius: 4px;
       font-weight: bold;
@@ -62,31 +79,99 @@
       height: 100%;
       padding: 5px;
       box-sizing: border-box;
+      transition: all 0.3s ease;
     }
+
     .correct {
-      background: green;
+      background: #4a7856;
     }
+
     .partial {
-      background: orange;
+      background: #e4dc50;
     }
+
     .wrong {
-      background: red;
+      background: #ec2020;
     }
+
+    .cell.correct {
+  animation: correctReveal 0.6s ease;
+}
+
+    .cell.correct .star {
+  color: #ffd700;
+  text-shadow: 0 0 3px rgba(255,215,0,0.5);
+}
+
+.guess {
+  transition: transform 0.3s ease;
+}
+
+.guess:hover {
+  transform: scale(1.02);
+  z-index: 1;
+}
+
+@keyframes correctReveal {
+  0% { transform: rotateX(0); }
+  50% { transform: rotateX(90deg); }
+  100% { transform: rotateX(0); }
+}
+
     /* Célula do ano: seta exibida como fundo centralizado, com maior visibilidade */
     .cell.ano {
       background-position: center;
       background-repeat: no-repeat;
       background-size: 70% 70%;
     }
+
     .cell.ano.correct {
       /* Sem seta se estiver correto */
     }
+
     .cell.ano.wrong.up {
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Cpolygon points='32,8 8,56 56,56' fill='rgba(255,255,255,0.7)'/%3E%3C/svg%3E");
     }
+
     .cell.ano.wrong.down {
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Cpolygon points='8,8 56,8 32,56' fill='rgba(255,255,255,0.7)'/%3E%3C/svg%3E");
     }
+
+    .cell.paginas {
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 70% 70%;
+      /* Ajuste o tamanho da seta conforme necessário */
+    }
+
+    .cell.paginas.correct {
+      /* Sem seta quando correto */
+    }
+
+    .cell.paginas.wrong.up {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Cpolygon points='32,8 8,56 56,56' fill='rgba(255,255,255,0.7)'/%3E%3C/svg%3E");
+    }
+
+    .cell.paginas.wrong.down {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Cpolygon points='8,8 56,8 32,56' fill='rgba(255,255,255,0.7)'/%3E%3C/svg%3E");
+    }
+
+    @media (max-width: 768px) {
+  .guess, .header {
+    grid-template-columns: 40px repeat(8, minmax(60px, 1fr));
+    height: 45px;
+    font-size: 0.8rem;
+  }
+  
+  input[type="text"] {
+    width: 200px;
+  }
+  
+  .cell img {
+    max-width: 35px;
+  }
+}
+
     /* Estilo para a imagem da capa */
     .cell img {
       display: block;
@@ -95,9 +180,10 @@
     }
   </style>
 </head>
+
 <body>
   <div id="game">
-    <h1>joguinho de livro do meu amor</h1>
+    <h1>LivroMo</h1>
     <p>Adivinhe o livro do dia! (Cada dia um novo livro)</p>
     <form id="guessForm">
       <input type="text" id="guessInput" list="bookList" placeholder="Digite o nome do livro" autocomplete="off" />
@@ -105,7 +191,7 @@
       <datalist id="bookList"></datalist>
       <button type="submit">Enviar</button>
     </form>
-    
+
     <!-- Cabeçalho com os rótulos -->
     <div id="guessesHeader" class="guess header">
       <div class="cell">Capa</div>
@@ -116,8 +202,18 @@
       <div class="cell">Páginas</div>
       <div class="cell">Idioma</div>
       <div class="cell">Editora</div>
+      <div class="cell">Estrelas</div>
     </div>
     <div id="guesses"></div>
+    <div id="winModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.2); text-align: center;">
+      <h2>🎉 Parabéns! 🎉</h2>
+      <p>Você acertou o livro do dia:</p>
+      <h3 id="winTitle"></h3>
+      <button onclick="document.getElementById('winModal').style.display = 'none'">Fechar</button>
+    </div>
+    <footer style="text-align: center; margin-top: 2rem; color: #666;">
+      Feito com ❤️ por Arthur Ramos para Ana Catharina
+    </footer>
   </div>
 
   <script>
@@ -132,7 +228,8 @@
         paginas: 328,
         idioma: "Inglês",
         editora: "Secker & Warburg",
-        capa: "https://via.placeholder.com/50x75?text=1984"
+        capa: "https://via.placeholder.com/50x75?text=1984",
+        estrelas: 5
       },
       {
         nome: "Brave New World",
@@ -143,7 +240,8 @@
         paginas: 311,
         idioma: "Inglês",
         editora: "Chatto & Windus",
-        capa: "https://via.placeholder.com/50x75?text=BNW"
+        capa: "https://via.placeholder.com/50x75?text=BNW",
+        estrelas: 1
       },
       {
         nome: "To Kill a Mockingbird",
@@ -154,7 +252,8 @@
         paginas: 281,
         idioma: "Inglês",
         editora: "J. B. Lippincott & Co.",
-        capa: "https://via.placeholder.com/50x75?text=TKAM"
+        capa: "https://via.placeholder.com/50x75?text=TKAM",
+        estrelas: 5
       },
       {
         nome: "Pride and Prejudice",
@@ -165,7 +264,8 @@
         paginas: 432,
         idioma: "Inglês",
         editora: "T. Egerton",
-        capa: "https://via.placeholder.com/50x75?text=P&P"
+        capa: "https://via.placeholder.com/50x75?text=P&P",
+        estrelas: 2
       },
       {
         nome: "The Hobbit",
@@ -176,7 +276,8 @@
         paginas: 310,
         idioma: "Inglês",
         editora: "George Allen & Unwin",
-        capa: "https://via.placeholder.com/50x75?text=Hobbit"
+        capa: "https://via.placeholder.com/50x75?text=Hobbit",
+        estrelas: 3
       },
       {
         nome: "The Fellowship of the Ring",
@@ -187,7 +288,8 @@
         paginas: 423,
         idioma: "Inglês",
         editora: "George Allen & Unwin",
-        capa: "https://via.placeholder.com/50x75?text=LotR1"
+        capa: "https://via.placeholder.com/50x75?text=LotR1",
+        estrelas: 4
       }
     ];
 
@@ -226,6 +328,20 @@
       return guessProp.toString().trim().toLowerCase() === secretProp.toString().trim().toLowerCase() ? "correct" : "wrong";
     }
 
+    function compareEstrelas(guessEstrelas, secretEstrelas) {
+      return guessEstrelas === secretEstrelas ? "correct" : "wrong";
+    }
+
+    function comparePaginas(guessPaginas, secretPaginas) {
+      if (guessPaginas === secretPaginas) {
+        return { result: "correct", arrow: "" };
+      } else if (guessPaginas < secretPaginas) {
+        return { result: "wrong", arrow: "up" };
+      } else {
+        return { result: "wrong", arrow: "down" };
+      }
+    }
+
     // Compara os anos; se não forem iguais, retorna seta ("up" ou "down")
     function compareAno(guessAno, secretAno) {
       if (guessAno === secretAno) {
@@ -238,7 +354,7 @@
     }
 
     // Processa o palpite do usuário
-    document.getElementById("guessForm").addEventListener("submit", function(e) {
+    document.getElementById("guessForm").addEventListener("submit", function (e) {
       e.preventDefault();
       const input = document.getElementById("guessInput");
       const guessName = input.value.trim();
@@ -249,11 +365,11 @@
         input.value = "";
         return;
       }
-      
+
       // Cria uma nova linha para o palpite
       const guessRow = document.createElement("div");
       guessRow.className = "guess";
-      
+
       // Célula 0: Capa do livro
       const cellCapa = document.createElement("div");
       cellCapa.className = "cell";
@@ -262,19 +378,19 @@
       img.alt = guessedBook.nome;
       cellCapa.appendChild(img);
       guessRow.appendChild(cellCapa);
-      
+
       // Célula 1: Gênero
       const cellGenero = document.createElement("div");
       cellGenero.className = "cell " + compareGeneros(guessedBook.genero, secretBook.genero);
       cellGenero.textContent = guessedBook.genero.join(", ");
       guessRow.appendChild(cellGenero);
-      
+
       // Célula 2: País
       const cellPais = document.createElement("div");
       cellPais.className = "cell " + compareProperty(guessedBook.pais, secretBook.pais);
       cellPais.textContent = guessedBook.pais;
       guessRow.appendChild(cellPais);
-      
+
       // Célula 3: Ano (com seta grande no fundo)
       const cellAno = document.createElement("div");
       const anoComparison = compareAno(guessedBook.ano, secretBook.ano);
@@ -284,42 +400,55 @@
         cellAno.classList.add(anoComparison.arrow);
       }
       guessRow.appendChild(cellAno);
-      
+
       // Célula 4: Autor
       const cellAutor = document.createElement("div");
       cellAutor.className = "cell " + compareProperty(guessedBook.autor, secretBook.autor);
       cellAutor.textContent = guessedBook.autor;
       guessRow.appendChild(cellAutor);
-      
+
       // Célula 5: Quantidade de Páginas
       const cellPaginas = document.createElement("div");
-      cellPaginas.className = "cell " + compareProperty(guessedBook.paginas, secretBook.paginas);
+      const paginasComparison = comparePaginas(guessedBook.paginas, secretBook.paginas);
+      cellPaginas.className = `cell paginas ${paginasComparison.result}`;
+      if (paginasComparison.arrow) {
+        cellPaginas.classList.add(paginasComparison.arrow);
+      }
       cellPaginas.textContent = guessedBook.paginas;
       guessRow.appendChild(cellPaginas);
-      
+
       // Célula 6: Idioma
       const cellIdioma = document.createElement("div");
       cellIdioma.className = "cell " + compareProperty(guessedBook.idioma, secretBook.idioma);
       cellIdioma.textContent = guessedBook.idioma;
       guessRow.appendChild(cellIdioma);
-      
+
       // Célula 7: Editora
       const cellEditora = document.createElement("div");
       cellEditora.className = "cell " + compareProperty(guessedBook.editora, secretBook.editora);
       cellEditora.textContent = guessedBook.editora;
       guessRow.appendChild(cellEditora);
-      
+
+      // Célula 8: Estrelas
+      const cellEstrelas = document.createElement("div");
+      cellEstrelas.className = "cell " + compareEstrelas(guessedBook.estrelas, secretBook.estrelas);
+      cellEstrelas.textContent = "★".repeat(guessedBook.estrelas);
+      guessRow.appendChild(cellEstrelas);
+
       document.getElementById("guesses").appendChild(guessRow);
       input.value = "";
-      
+
       // Verifica se todas as propriedades (exceto a capa) estão corretas
       const correctCells = guessRow.querySelectorAll(".cell.correct").length;
-      if (correctCells === 7) {
+      if (correctCells === 8) { // Alterado de 7 para 8
         setTimeout(() => {
-          alert("Parabéns! Você acertou o livro do dia: " + secretBook.nome);
+          const winModal = document.getElementById('winModal');
+document.getElementById('winTitle').textContent = secretBook.nome;
+winModal.style.display = 'block';
         }, 100);
       }
     });
   </script>
 </body>
+
 </html>
