@@ -15,17 +15,18 @@
 
     h1 {
       text-align: center;
-      color: #1d2324; /* Verde-azulado escuro */
-  font-family: 'Georgia', serif;
+      color: #1d2324;
+      /* Verde-azulado escuro */
+      font-family: 'Georgia', serif;
     }
 
     #game {
       max-width: 800px;
       margin: 0 auto;
       background: #fff9f0;
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     }
 
     form {
@@ -52,9 +53,12 @@
       display: grid;
       grid-template-columns: 60px repeat(8, 1fr);
       gap: 5px;
-      margin-bottom: 10px;
       align-items: center;
       height: 60px;
+    }
+
+    #guessesHeader {
+      margin-bottom: 10px;
     }
 
     /* Cabeçalho com os rótulos das colunas */
@@ -87,7 +91,7 @@
     }
 
     .partial {
-      background: #e4dc50;
+      background: #ffad14;
     }
 
     .wrong {
@@ -95,28 +99,55 @@
     }
 
     .cell.correct {
-  animation: correctReveal 0.6s ease;
-}
+      animation: correctReveal 0.6s ease;
+    }
 
     .cell.correct .star {
-  color: #ffd700;
-  text-shadow: 0 0 3px rgba(255,215,0,0.5);
-}
+      color: #ffd700;
+      text-shadow: 0 0 3px rgba(255, 215, 0, 0.5);
+    }
 
-.guess {
-  transition: transform 0.3s ease;
-}
+    .cell:first-child {
+      height: 80px;
+      padding: 5px;
+    }
 
-.guess:hover {
-  transform: scale(1.02);
-  z-index: 1;
-}
+    .cell img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 3px;
+    }
 
-@keyframes correctReveal {
-  0% { transform: rotateX(0); }
-  50% { transform: rotateX(90deg); }
-  100% { transform: rotateX(0); }
-}
+    .guess {
+      transition: transform 0.3s ease;
+      min-height: 80px;
+      align-items: stretch;
+    }
+
+    #guesses {
+      display: grid;
+      gap: 15px;
+    }
+
+    .guess:hover {
+      transform: scale(1.02);
+      z-index: 1;
+    }
+
+    @keyframes correctReveal {
+      0% {
+        transform: rotateX(0);
+      }
+
+      50% {
+        transform: rotateX(90deg);
+      }
+
+      100% {
+        transform: rotateX(0);
+      }
+    }
 
     /* Célula do ano: seta exibida como fundo centralizado, com maior visibilidade */
     .cell.ano {
@@ -157,20 +188,22 @@
     }
 
     @media (max-width: 768px) {
-  .guess, .header {
-    grid-template-columns: 40px repeat(8, minmax(60px, 1fr));
-    height: 45px;
-    font-size: 0.8rem;
-  }
-  
-  input[type="text"] {
-    width: 200px;
-  }
-  
-  .cell img {
-    max-width: 35px;
-  }
-}
+
+      .guess,
+      .header {
+        grid-template-columns: 40px repeat(8, minmax(60px, 1fr));
+        height: 45px;
+        font-size: 0.8rem;
+      }
+
+      input[type="text"] {
+        width: 200px;
+      }
+
+      .cell img {
+        max-width: 35px;
+      }
+    }
 
     /* Estilo para a imagem da capa */
     .cell img {
@@ -205,7 +238,8 @@
       <div class="cell">Estrelas</div>
     </div>
     <div id="guesses"></div>
-    <div id="winModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.2); text-align: center;">
+    <div id="winModal"
+      style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.2); text-align: center;">
       <h2>🎉 Parabéns! 🎉</h2>
       <p>Você acertou o livro do dia:</p>
       <h3 id="winTitle"></h3>
@@ -232,64 +266,40 @@
         estrelas: 5
       },
       {
-        nome: "Brave New World",
-        genero: ["Distopia", "Ficção Científica"],
-        pais: "Reino Unido",
-        ano: 1932,
-        autor: "Aldous Huxley",
-        paginas: 311,
-        idioma: "Inglês",
-        editora: "Chatto & Windus",
-        capa: "https://via.placeholder.com/50x75?text=BNW",
-        estrelas: 1
+        nome: "A Pirâmide Vermelha",
+        genero: ["Aventura", "Mitologia"],
+        pais: "Estados Unidos",
+        ano: 2010,
+        autor: "Rick Riordan",
+        paginas: 516,
+        idioma: "Português",
+        editora: "Intrínseca",
+        capa: "https://m.media-amazon.com/images/I/61rxMph1PfL.jpg",
+        estrelas: 4
       },
       {
-        nome: "To Kill a Mockingbird",
-        genero: ["Clássico", "Drama"],
-        pais: "Estados Unidos",
-        ano: 1960,
-        autor: "Harper Lee",
-        paginas: 281,
-        idioma: "Inglês",
-        editora: "J. B. Lippincott & Co.",
-        capa: "https://via.placeholder.com/50x75?text=TKAM",
+        nome: "As Mulheres do Nazismo",
+        genero: ["Não-ficção", "Guerra"],
+        pais: "Brasil", // Originalmente pesquisa internacional, mas edição brasileira
+        ano: 2014,
+        autor: "Wendy Lower",
+        paginas: 368,
+        idioma: "Português",
+        editora: "Editora Record",
+        capa: "https://m.media-amazon.com/images/I/A1PbVN2dXFL._SL1500_.jpg",
         estrelas: 5
       },
       {
-        nome: "Pride and Prejudice",
-        genero: ["Romance", "Clássico"],
-        pais: "Reino Unido",
-        ano: 1813,
-        autor: "Jane Austen",
-        paginas: 432,
-        idioma: "Inglês",
-        editora: "T. Egerton",
-        capa: "https://via.placeholder.com/50x75?text=P&P",
-        estrelas: 2
-      },
-      {
-        nome: "The Hobbit",
-        genero: ["Fantasia", "Aventura"],
-        pais: "Reino Unido",
-        ano: 1937,
-        autor: "J.R.R. Tolkien",
-        paginas: 310,
-        idioma: "Inglês",
-        editora: "George Allen & Unwin",
-        capa: "https://via.placeholder.com/50x75?text=Hobbit",
-        estrelas: 3
-      },
-      {
-        nome: "The Fellowship of the Ring",
-        genero: ["Fantasia", "Aventura"],
-        pais: "Reino Unido",
-        ano: 1954,
-        autor: "J.R.R. Tolkien",
-        paginas: 423,
-        idioma: "Inglês",
-        editora: "George Allen & Unwin",
-        capa: "https://via.placeholder.com/50x75?text=LotR1",
-        estrelas: 4
+        nome: "Eleanor & Park",
+        genero: ["Romance", "Drama"],
+        pais: "Estados Unidos",
+        ano: 2013,
+        autor: "Rainbow Rowell",
+        paginas: 328,
+        idioma: "Português",
+        editora: "Galera Record",
+        capa: "https://m.media-amazon.com/images/I/714nqDeIwOL._AC_UF1000,1000_QL80_.jpg",
+        estrelas: 5
       }
     ];
 
@@ -443,8 +453,8 @@
       if (correctCells === 8) { // Alterado de 7 para 8
         setTimeout(() => {
           const winModal = document.getElementById('winModal');
-document.getElementById('winTitle').textContent = secretBook.nome;
-winModal.style.display = 'block';
+          document.getElementById('winTitle').textContent = secretBook.nome;
+          winModal.style.display = 'block';
         }, 100);
       }
     });
